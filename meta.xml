@@ -1,0 +1,27 @@
+	<name>IVDevs Core</name>
+	<description>RolePlay Framework</description>
+    <creator>IVDevs</creator>
+    <version>1.0.0</version>
+    <logo>https://happinessmp.net/img/banner.jpg</logo>
+    <tags>
+		  <tag>Gamemode</tag>
+    </tags>
+    <meta type="lua">
+        <script type="client" src="config.lua" />
+        <script type="server" src="config.lua" />
+        <script type="client" src="client/main.lua" />
+        <script type="client" src="client/functions.lua" />
+        <script type="client" src="client/events.lua" />
+        <script type="client" src="client/loops.lua" />
+        <script type="client" src="client/commands.lua" />
+        <script type="client" src="client/utils.lua" />
+        <script type="client" src="client/menu_main.lua" />
+        <script type="server" src="server/main.lua" />
+        <script type="server" src="server/functions.lua" />
+        <script type="server" src="server/player.lua" />
+        <script type="server" src="server/events.lua" />
+        <script type="server" src="server/exports.lua" />
+        <script type="server" src="server/debug.lua" />
+        <export type="client" function="GetCoreObject" />
+        <export type="server" function="GetCoreObject" />
+    </meta>

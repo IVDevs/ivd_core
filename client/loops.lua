@@ -18,5 +18,12 @@ Thread.Create(function()
         if IVD.DrawHelper.State == true then
             Game.DrawFrontendHelperText("", "FrameworkHelper", false)
         end
+
+        local playerId = Game.GetPlayerId();
+        if Game.IsWantedLevelGreater(playerId, 0) then
+            Game.ClearWantedLevel(playerId)
+            Game.AlterWantedLevel(playerId, 0)
+            Game.ApplyWantedLevelChangeNow(playerId)
+        end
     end
 end)

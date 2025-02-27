@@ -1,3 +1,4 @@
+IVD.Inventory = {}
 local MenuID = Game.GenerateRandomIntInRange(1, 10000)
 
 Events.Subscribe("scriptInit", function()
@@ -28,14 +29,26 @@ end, true)
 
 Events.Subscribe("IVMenu_Setup_" .. MenuID, function() 
     IVMenu.ItemCore.menu_len = 0
-    IVMenu.ItemCore.title = "INVENTORY"
-    
+    Chat.AddMessage(IVMenu.ItemCore.menu_level)
     if IVMenu.ItemCore.menu_level == 0 then
+        IVMenu.ItemCore.title = "INVENTORY"
         IVMenu.ItemCore.footer = "Main"
         IVMenu.ItemType.add_item("Cash: $"..IVD.PlayerData.money.cash)
         for key, value in pairs(IVD.PlayerData.Items) do
             IVMenu.ItemType.add_submenu(Shared.Items[key].lable..' x'..value)
         end
+    else
+        IVMenu.ItemCore.title = 'ITEM_NAME_HERE' --Looking on a way to add item name
+        IVMenu.ItemCore.footer = "Item"
+        IVMenu.ItemType.add_item('Use') --Looking on a way to make item usable
+        IVMenu.ItemType.add_submenu('Give') --Looking on a way to setup a player list
+        IVMenu.ItemType.add_item('Drop') --Looking on a way to drop an item
+    end
+end, true)
+
+Events.Subscribe("IVMenu_function_"..MenuID, function(I)   
+    if (IVMenu.ItemCore.menu_level == 1) then
+        IVD.Inventory.Choice = IVMenu.ItemCore.value[I]
     end
 end, true)
 

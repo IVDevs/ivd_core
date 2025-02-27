@@ -37,6 +37,7 @@ local scrolling = true -- lock scrolling items at value
 IVMenu = {
     ItemCore = {
         last_selected = {},
+        last_text = "",
         menu_level = 0,
         menu_len = 0,
         footer = ".",
@@ -207,6 +208,10 @@ function IVMenuDraw(items)
                         Events.Call("IVMenu_Setup_"..MenuID, {})
                     else
                         -- next level
+                        if item_text == 'Give' then
+                        else
+                            IVMenu.ItemCore.last_text = item_text
+                        end
                         IVMenu.ItemCore.last_selected[IVMenu.ItemCore.menu_level] = i
                         IVMenu.ItemCore.menu_level = IVMenu.ItemCore.menu_level + 1
                         -- reset scrolling

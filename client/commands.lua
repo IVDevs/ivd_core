@@ -76,6 +76,6 @@ IVD.Commands.Add("/setjob", function(player, args)
     local PlayerID = Player.GetServerID(tonumber(args[2]))
     local Job = args[3]
     local Job_Role = args[4]
-    Chat.AddMessage('Your new job: '..Job..' ID: '..PlayerID)
+    Chat.AddMessage('You have set job: '..Job..' for ID: '..PlayerID)
     Events.CallRemote('ivd_core:Server:JobCommand', { PlayerID, Job, Job_Role })
 end, false, "/setjob [id] [job] [role]", "mod")

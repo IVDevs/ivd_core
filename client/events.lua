@@ -29,7 +29,7 @@ end, true)
 
 Events.Subscribe("IVMenu_Setup_" .. MenuID, function() 
     IVMenu.ItemCore.menu_len = 0
-    Chat.AddMessage(IVMenu.ItemCore.menu_level)
+
     if IVMenu.ItemCore.menu_level == 0 then
         IVMenu.ItemCore.title = "INVENTORY"
         IVMenu.ItemCore.footer = "Main"
@@ -38,7 +38,7 @@ Events.Subscribe("IVMenu_Setup_" .. MenuID, function()
             IVMenu.ItemType.add_submenu(Shared.Items[key].lable..' x'..value)
         end
     else
-        IVMenu.ItemCore.title = 'ITEM_NAME_HERE' --Looking on a way to add item name
+        IVMenu.ItemCore.title = tostring(IVMenu.ItemCore.last_text)
         IVMenu.ItemCore.footer = "Item"
         IVMenu.ItemType.add_item('Use') --Looking on a way to make item usable
         IVMenu.ItemType.add_submenu('Give') --Looking on a way to setup a player list

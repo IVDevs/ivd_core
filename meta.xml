@@ -7,6 +7,7 @@
 		  <tag>Gamemode</tag>
     </tags>
     <meta type="lua">
+        <script type="client" src="shared/items.lua" />
         <script type="client" src="config.lua" />
         <script type="server" src="config.lua" />
         <script type="client" src="client/main.lua" />

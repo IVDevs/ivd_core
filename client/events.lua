@@ -33,6 +33,9 @@ Events.Subscribe("IVMenu_Setup_" .. MenuID, function()
     if IVMenu.ItemCore.menu_level == 0 then
         IVMenu.ItemCore.footer = "Main"
         IVMenu.ItemType.add_item("Cash: $"..IVD.PlayerData.money.cash)
+        for key, value in pairs(IVD.PlayerData.Items) do
+            IVMenu.ItemType.add_submenu(Shared.Items[key].lable..' x'..value)
+        end
     end
 end, true)
 

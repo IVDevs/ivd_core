@@ -167,3 +167,16 @@ end
 function IVD.DrawHelper.HideHelper()
     IVD.DrawHelper.State = false
 end
+
+function IVD.Functions.Debug(o)
+    if type(o) == 'table' then
+        local s = '{ '
+        for k,v in pairs(o) do
+           if type(k) ~= 'number' then k = '"'..k..'"' end
+           s = s .. '['..k..'] = ' .. IVD.Functions.Debug(v) .. ','
+        end
+        return s .. '} '
+     else
+        return tostring(o)
+     end
+end

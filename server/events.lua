@@ -1,0 +1,13 @@
+Events.Subscribe("ivd_core:Server:UpdatePlayerJob", function(RocstarID, Job, role)
+    local source = Events.GetSource()
+    Chat.SendMessage(source, "Your ping2 is: {0000FF}" .. Player.GetPing(source))
+    MySQL.Execute("UPDATE players SET Job=?, Role=? WHERE RockstarID=?", { Job, role, RocstarID }, function(affectedRows)
+        Events.CallRemote("ivd_core:Client:UpdatePlayerJob", source, { job, role })
+    end)
+end, true)
+
+Events.Subscribe("ivd_core:Server:JobCommand", function(id, job, role)
+    local source = Events.GetSource()
+    Chat.SendMessage(source, "Your ping is: {0000FF}" .. Player.GetPing(source))
+    Events.CallRemote("ivd_core:PassPlayerRIDForJob", id, { job, role })
+end, true)

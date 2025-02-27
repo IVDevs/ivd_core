@@ -24,7 +24,7 @@ local ItemType = { -- tables type of items
 local ComputerDict = nil
 local NetworkDict = nil
 
--- scrolling système
+-- scrolling systÃ¨me
 local scroll_pos_y, const_scroll_pos_y -- default
 local consts_start_scroll = 11 -- default
 local item_start_scroll = 11 -- start scrolling
@@ -39,8 +39,8 @@ IVMenu = {
         last_selected = {},
         menu_level = 0,
         menu_len = 0,
-        footer = " ",
-        title = " ",
+        footer = ".",
+        title = ".",
         value = {}
     },
 
@@ -163,25 +163,9 @@ end, true)
 --    Core menu         -- 
 --------------------------
 
-function IVMenuDraw(items, title, title2)
+function IVMenuDraw(items)
     -- Help.lua
     local correction_x
-
-    -- titre
-    Game.SetTextScale(0.200000,  0.300000)
-    Game.SetTextDropshadow(false, 0, 0, 0, 0)
-    Game.SetTextFont(3)
-    Game.SetTextColour(255, 255, 255, 255)
-    Game.DisplayTextWithLiteralString(menu_posX + 0.0500, menu_posY - 0.0760, "STRING", GetStringWithoutSpaces(title))    
-
-    if(title2 ~= title) then 
-        -- titre submenu
-        Game.SetTextScale(0.200000,  0.3500000)
-        Game.SetTextDropshadow(false, 0, 0, 0, 0)
-        Game.SetTextFont(3)
-        Game.SetTextColour(255, 255, 255, 255)
-        Game.DisplayTextWithLiteralString(menu_posX+0.005, menu_posY - 0.0260, "STRING", GetStringWithoutSpaces(title2))
-    end
 
     if(IVMenu.ItemCore.menu_len > 0) then 
         -- nombre d'item / item max
@@ -357,7 +341,21 @@ Events.Subscribe("scriptInit", function()
 
             if (isOpen and not Game.IsPauseMenuActive()) then
                 
-                IVMenuDraw(item_name, IVMenu.ItemCore.title, IVMenu.ItemCore.footer) 
+                -- titre
+                Game.SetTextScale(0.200000,  0.300000)
+                Game.SetTextDropshadow(false, 0, 0, 0, 0)
+                Game.SetTextFont(3)
+                Game.SetTextColour(255, 255, 255, 255)
+                Game.DisplayTextWithLiteralString(menu_posX + 0.0500, menu_posY - 0.0760, "STRING", IVMenu.ItemCore.title)    
+
+                -- titre submenu
+                Game.SetTextScale(0.200000,  0.3500000)
+                Game.SetTextDropshadow(false, 0, 0, 0, 0)
+                Game.SetTextFont(3)
+                Game.SetTextColour(255, 255, 255, 255)
+                Game.DisplayTextWithLiteralString(menu_posX+0.005, menu_posY - 0.0260, "STRING", IVMenu.ItemCore.footer)
+                
+                IVMenuDraw(item_name) 
                 
                 -- Display mouse on screen
                 local mx, my = Game.GetMousePosition()

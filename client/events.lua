@@ -2,13 +2,23 @@ local MenuID = Game.GenerateRandomIntInRange(1, 10000)
 
 Events.Subscribe("scriptInit", function()
     local RocstarID = Player.GetRockstarID()
-    Chat.AddMessage("Welcome "..RocstarID.." to my server we saved your data!")
     Events.CallRemote("ivd_core:playerJoined", { RocstarID })
 end)
 
 Events.Subscribe("ivd_core:UpdatePlayerData", function(result)
     IVD.PlayerData = result
     IVD.Functions.SpawnPlayer(IVD.PlayerData.position)
+end, true)
+
+Events.Subscribe("ivd_core:PassPlayerRIDForJob", function(job, role)
+    local RocstarID = Player.GetRockstarID()
+    Chat.AddMessage('Your RID is: '..RocstarID)
+    Events.CallRemote("ivd_core:Server:UpdatePlayerJob", { RocstarID, job, role })
+end, true)
+
+Events.Subscribe("ivd_core:Client:UpdatePlayerJob", function(job, role)
+    IVD.PlayerData.Job = job
+    IVD.PlayerData.Role = role
 end, true)
 
 Events.Subscribe("ivd_core:FirstPlayerData", function(result)
@@ -35,4 +45,8 @@ Events.Subscribe("scriptInit", function()
             end 
         end
     end)
+end)
+
+Events.Subscribe("sessionInit", function()
+    Text.SetLoadingText("Loading Your RolePlay Expiriance...")
 end)

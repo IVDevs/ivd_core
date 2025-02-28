@@ -6,5 +6,8 @@ Shared.Items = {
     },
     ['hamburger'] = {
         lable = "Hamburger"
+    },
+    ['water'] = {
+        lable = "Water"
     }
 }

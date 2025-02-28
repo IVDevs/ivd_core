@@ -21,8 +21,6 @@
         <script type="server" src="server/functions.lua" />
         <script type="server" src="server/player.lua" />
         <script type="server" src="server/events.lua" />
-        <script type="server" src="server/exports.lua" />
-        <script type="server" src="server/debug.lua" />
         <export type="client" function="GetCoreObject" />
         <export type="server" function="GetCoreObject" />
     </meta>

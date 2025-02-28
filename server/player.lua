@@ -7,7 +7,7 @@ Events.Subscribe("ivd_core:playerJoined", function(RocstarID)
         result[1].Items = IVD.JSON.Decode(result[1].Items)
         Events.CallRemote("ivd_core:UpdatePlayerData", source, { result[1] })
     else
-        MySQL.Insert("INSERT INTO players (RockstarID) VALUES (?)", { RocstarID }, function(data)
+        MySQL.Insert("INSERT INTO players (RockstarID, money, Items, position) VALUES (?,?,?,?)", { RocstarID, tostring(IVD.JSON.Encode(Config.Starting_Cash)), tostring(IVD.JSON.Encode(Config.Starting_Items)), tostring(IVD.JSON.Encode(Config.Starting_Position)) }, function(data)
             local result = MySQL.Select("SELECT * FROM players WHERE RockstarID = ?", { RocstarID })
             result[1].position = IVD.JSON.Decode(result[1].position)
             result[1].money = IVD.JSON.Decode(result[1].money)

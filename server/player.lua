@@ -24,7 +24,7 @@ end, true)
 
 Events.Subscribe("ivd_core:UpdatePlayerServerData", function(RocstarID, PlayerData)
     local source = Events.GetSource()
-    MySQL.Execute("UPDATE players SET position=?, money=? WHERE RockstarID=?", { IVD.JSON.Encode(PlayerData.position), IVD.JSON.Encode(PlayerData.money), RocstarID }, function(affectedRows)
+    MySQL.Execute("UPDATE players SET position=?, money=?, Items=? WHERE RockstarID=?", { IVD.JSON.Encode(PlayerData.position), IVD.JSON.Encode(PlayerData.money), IVD.JSON.Encode(PlayerData.Items), RocstarID }, function(affectedRows)
        --Do some here when updated
     end)
 end, true)

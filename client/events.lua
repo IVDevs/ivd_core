@@ -1,4 +1,3 @@
-IVD.Inventory = {}
 local MenuID = Game.GenerateRandomIntInRange(1, 10000)
 
 Events.Subscribe("scriptInit", function()
@@ -13,7 +12,6 @@ end, true)
 
 Events.Subscribe("ivd_core:PassPlayerRIDForJob", function(job, role)
     local RocstarID = Player.GetRockstarID()
-    Chat.AddMessage('Your RID is: '..RocstarID)
     Events.CallRemote("ivd_core:Server:UpdatePlayerJob", { RocstarID, job, role })
 end, true)
 
@@ -33,24 +31,61 @@ Events.Subscribe("IVMenu_Setup_" .. MenuID, function()
     if IVMenu.ItemCore.menu_level == 0 then
         IVMenu.ItemCore.title = "INVENTORY"
         IVMenu.ItemCore.footer = "Main"
-        IVMenu.ItemType.add_item("Cash: $"..IVD.PlayerData.money.cash)
+        IVMenu.ItemType.add_item("Cash: $" .. IVD.PlayerData.money.cash)
+
         for key, value in pairs(IVD.PlayerData.Items) do
-            IVMenu.ItemType.add_submenu(Shared.Items[key].lable..' x'..value)
+            IVMenu.ItemType.add_submenu(Shared.Items[key].lable .. ' x' .. value)
         end
+    elseif IVMenu.ItemCore.menu_level == 3 then
+        --Here give item stuff
     else
-        IVMenu.ItemCore.title = tostring(IVMenu.ItemCore.last_text)
+        local selectedItem = IVMenu.ItemCore.last_text 
+        local selectedItem2 = selectedItem:gsub("%s*x%d+$", "")
+
+        for key, data in pairs(Shared.Items) do
+            if data.lable == selectedItem2 then
+                selectedItem2 = key
+                break
+            end
+        end
+
+        -- Convert first letter to lowercase (optional but safe)
+        selectedItem2 = selectedItem2:sub(1,1):lower() .. selectedItem2:sub(2)
+
+        IVMenu.ItemCore.title = tostring(selectedItem)
         IVMenu.ItemCore.footer = "Item"
-        IVMenu.ItemType.add_item('Use') --Looking on a way to make item usable
-        IVMenu.ItemType.add_submenu('Give') --Looking on a way to setup a player list
-        IVMenu.ItemType.add_item('Drop') --Looking on a way to drop an item
+
+        if IVD.Functions.UsableItems[selectedItem2] then
+            IVMenu.ItemType.add_item('Use')
+        end
+
+        IVMenu.ItemType.add_submenu('Give') -- Find a way to Setup player list and give
+        IVMenu.ItemType.add_item('Drop') -- Find a way to Drop item
     end
 end, true)
 
-Events.Subscribe("IVMenu_function_"..MenuID, function(I)   
+Events.Subscribe("IVMenu_function_" .. MenuID, function(I)   
     if (IVMenu.ItemCore.menu_level == 1) then
-        IVD.Inventory.Choice = IVMenu.ItemCore.value[I]
+        local itemName = IVMenu.ItemCore.last_text:gsub("%s*[xX]%d+$", "")
+
+        local selectedItem = nil
+        for key, data in pairs(Shared.Items) do
+            if data.lable == itemName then
+                selectedItem = key
+                break
+            end
+        end
+
+        selectedItem = selectedItem or (itemName:sub(1,1):lower() .. itemName:sub(2))
+
+        if (I == 1) and IVD.Functions.UsableItems[selectedItem] then
+            IVD.Functions.UsableItems[selectedItem]()
+        elseif (I == 2) then
+            --Drop System
+        end
     end
 end, true)
+
 
 Events.Subscribe("scriptInit", function()
     Thread.Create(function()

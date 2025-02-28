@@ -3,6 +3,7 @@ IVD.Functions = {}
 IVD.CommandHandlers = {}
 IVD.SpawnLock = false
 IVD.DrawHelper = {}
+IVD.Functions.UsableItems = {}
 
 function IVD.Functions.LoadModel(model)
     if Game.HasModelLoaded(model) then return end
@@ -178,4 +179,8 @@ function IVD.Functions.Debug(o)
      else
         return tostring(o)
      end
+end
+
+function IVD.Functions.RegisterUsableItem(itemName, callback)
+    IVD.Functions.UsableItems[itemName] = callback
 end

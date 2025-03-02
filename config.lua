@@ -1,10 +1,16 @@
-Config = {
-    --Admins
+Config = {}
+Config.Server = {}
+
+Config.Server.ClosedServer = true -- Permission based server lock only people who are in Config.Permissions will not get kicked
+Config.Server.DebugMode = true -- Will log everything in console
+
+Config.Permissions = {
     Mods = {  }, -- List of Mod Rockstar IDs
     Admins = {  }, -- List of Admin Rockstar IDs
     Owners = { '112830746' }, -- God (highest permission)
+}
 
-    --New Character Data
+Config.NewCharacterSettings = {
     Starting_Items = {
         phone = 1,
         water = 5,

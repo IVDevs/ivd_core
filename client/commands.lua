@@ -56,7 +56,7 @@ end, false, "/dv", "admin")
 IVD.Commands.Add("/weather", function(player, args)
     Game.ForceWeatherNow(tonumber(args[2]))
     Chat.AddMessage("Changed weather to " .. IVD.Functions.WeatherName(tonumber(args[2])))
-end, false, "/weather [WEATHER_TYPE]", "mod")
+end, true, "/weather [WEATHER_TYPE]", "mod")
 
 IVD.Commands.Add("/fix", function(player, args)
     local playerId = Game.GetPlayerId()
@@ -70,12 +70,19 @@ end, false, "/fix", "mod")
 
 IVD.Commands.Add("/time", function(player, args)
     Game.ForwardToTimeOfDay(tonumber(args[2]), tonumber(args[3]))
-end, false, "/time [hours] [minutes]", "mod")
+end, true, "/time [hours] [minutes]", "mod")
+
+IVD.Commands.Add("/coords", function(player, args)
+    local x, y, z = Game.GetCharCoordinates(Game.GetPlayerChar(Game.GetPlayerId()))
+    local heading = Game.GetCharHeading(Game.GetPlayerChar(Game.GetPlayerId()))
+    IVD.Functions.LoadModel(model)
+    Chat.AddMessage(x..' '..y..' '..z..' '..heading)
+end, false, "/coords", "admin")
 
 IVD.Commands.Add("/setjob", function(player, args)
     local PlayerID = Player.GetServerID(tonumber(args[2]))
     local Job = args[3]
-    local Job_Role = args[4]
+    local Job_Grade = args[4]
     Chat.AddMessage('You have set job: '..Job..' for ID: '..PlayerID)
-    Events.CallRemote('ivd_core:Server:JobCommand', { PlayerID, Job, Job_Role })
-end, false, "/setjob [id] [job] [role]", "mod")
+    Events.CallRemote('ivd_core:Server:JobCommand', { PlayerID, Job, Job_Grade })
+end, true, "/setjob [id] [job] [grade]", "mod")

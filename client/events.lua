@@ -10,14 +10,14 @@ Events.Subscribe("ivd_core:UpdatePlayerData", function(result)
     IVD.Functions.SpawnPlayer(IVD.PlayerData.position)
 end, true)
 
-Events.Subscribe("ivd_core:PassPlayerRIDForJob", function(job, role)
+Events.Subscribe("ivd_core:PassPlayerRIDForJob", function(job, grade)
     local RocstarID = Player.GetRockstarID()
-    Events.CallRemote("ivd_core:Server:UpdatePlayerJob", { RocstarID, job, role })
+    Events.CallRemote("ivd_core:Server:UpdatePlayerJob", { RocstarID, job, grade })
 end, true)
 
-Events.Subscribe("ivd_core:Client:UpdatePlayerJob", function(job, role)
+Events.Subscribe("ivd_core:Client:UpdatePlayerJob", function(job, grade)
     IVD.PlayerData.Job = job
-    IVD.PlayerData.Role = role
+    IVD.PlayerData.Grade = grade
 end, true)
 
 Events.Subscribe("ivd_core:FirstPlayerData", function(result)
@@ -31,8 +31,12 @@ Events.Subscribe("IVMenu_Setup_" .. MenuID, function()
     if IVMenu.ItemCore.menu_level == 0 then
         IVMenu.ItemCore.title = "INVENTORY"
         IVMenu.ItemCore.footer = "Main"
+        IVMenu.ItemType.add_item("------------- MONEY -------------")
         IVMenu.ItemType.add_item("Cash: $" .. IVD.PlayerData.money.cash)
-
+        if IVD.PlayerData.money.black_money > 0 then
+            IVMenu.ItemType.add_item("Black Money: $" .. IVD.PlayerData.money.black_money)
+        end
+        IVMenu.ItemType.add_item("------------- ITEMS -------------")
         for key, value in pairs(IVD.PlayerData.Items) do
             IVMenu.ItemType.add_submenu(Shared.Items[key].lable .. ' x' .. value)
         end
@@ -60,7 +64,7 @@ Events.Subscribe("IVMenu_Setup_" .. MenuID, function()
         end
 
         IVMenu.ItemType.add_submenu('Give') -- Find a way to Setup player list and give
-        IVMenu.ItemType.add_item('Drop') -- Find a way to Drop item
+        IVMenu.ItemType.add_item('Drop')
     end
 end, true)
 
@@ -81,7 +85,9 @@ Events.Subscribe("IVMenu_function_" .. MenuID, function(I)
         if (I == 1) and IVD.Functions.UsableItems[selectedItem] then
             IVD.Functions.UsableItems[selectedItem]()
         elseif (I == 2) then
-            --Drop System
+            local newQuant = IVD.PlayerData.Items[selectedItem]-1
+            IVMenu.ItemCore.title = tostring(selectedItem..' x'..newQuant)
+            IVD.Functions.RemoveItem(selectedItem, '1')
         end
     end
 end, true)
@@ -99,5 +105,5 @@ Events.Subscribe("scriptInit", function()
 end)
 
 Events.Subscribe("sessionInit", function()
-    Text.SetLoadingText("Loading Your RolePlay Expiriance...")
+    Text.SetLoadingText("Your game might have longer loading time...")
 end)

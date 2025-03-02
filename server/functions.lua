@@ -1,4 +1,5 @@
 IVD.JSON = {}
+IVD.Functions = {}
 
 function IVD.JSON.Decode(json)
     -- Remove leading/trailing spaces
@@ -91,3 +92,37 @@ function IVD.JSON.Encode(value)
     end
 end
 
+function IVD.Functions.IsPlayerAdmin(RID)
+    IVD.Functions.DebugMode('[DEBUG] Checking is player an admin')
+    local playerID = tostring(RID)
+    
+    for _, ownerID in ipairs(Config.Permissions.Owners) do
+        if playerID == tostring(ownerID) then
+            IVD.Functions.DebugMode('[DEBUG] Is Admin')
+            return true
+        end
+    end
+    
+    for _, adminID in ipairs(Config.Permissions.Admins) do
+        if playerID == tostring(adminID) then
+            IVD.Functions.DebugMode('[DEBUG] Is Admin')
+            return true
+        end
+    end
+    
+    for _, modID in ipairs(Config.Permissions.Mods) do
+        if playerID == tostring(modID) then
+            IVD.Functions.DebugMode('[DEBUG] Is Admin')
+            return true
+        end
+    end
+    
+    IVD.Functions.DebugMode('[DEBUG] Not Admin')
+    return false
+end
+
+function IVD.Functions.DebugMode(data)
+    if Config.Server.DebugMode then
+        Console.Log(data)
+    end
+end

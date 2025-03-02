@@ -25,19 +25,19 @@ end
 function IVD.Functions.GetPlayerPermissionLevel(player)
     local playerID = tostring(Player.GetRockstarID(player))
 
-    for _, ownerID in ipairs(Config.Owners) do
+    for _, ownerID in ipairs(Config.Permissions.Owners) do
         if playerID == tostring(ownerID) then
             return "god"
         end
     end
 
-    for _, adminID in ipairs(Config.Admins) do
+    for _, adminID in ipairs(Config.Permissions.Admins) do
         if playerID == tostring(adminID) then
             return "admin"
         end
     end
 
-    for _, modID in ipairs(Config.Mods) do
+    for _, modID in ipairs(Config.Permissions.Mods) do
         if playerID == tostring(modID) then
             return "mod"
         end
@@ -183,4 +183,25 @@ end
 
 function IVD.Functions.RegisterUsableItem(itemName, callback)
     IVD.Functions.UsableItems[itemName] = callback
+end
+
+function IVD.Functions.AddItem(itemName, quantity)
+    IVD.DrawHelper.ShowHelper('+'..quantity..' '..itemName)
+    if IVD.PlayerData.Items[itemName] then
+        IVD.PlayerData.Items[itemName] = IVD.PlayerData.Items[itemName] + quantity
+    else
+        IVD.PlayerData.Items[itemName] = quantity
+    end
+    IVD.DrawHelper.HideHelper()
+end
+
+function IVD.Functions.RemoveItem(itemName, quantity)
+    IVD.DrawHelper.ShowHelper('-'..quantity..' '..itemName)
+    if IVD.PlayerData.Items[itemName] then
+        IVD.PlayerData.Items[itemName] = IVD.PlayerData.Items[itemName] - quantity
+        if IVD.PlayerData.Items[itemName] <= 0 then
+            IVD.PlayerData.Items[itemName] = nil
+        end
+    end
+    IVD.DrawHelper.HideHelper()
 end

@@ -75,7 +75,6 @@ end, true, "/time [hours] [minutes]", "mod")
 IVD.Commands.Add("/coords", function(player, args)
     local x, y, z = Game.GetCharCoordinates(Game.GetPlayerChar(Game.GetPlayerId()))
     local heading = Game.GetCharHeading(Game.GetPlayerChar(Game.GetPlayerId()))
-    IVD.Functions.LoadModel(model)
     Chat.AddMessage(x..' '..y..' '..z..' '..heading)
 end, false, "/coords", "admin")
 

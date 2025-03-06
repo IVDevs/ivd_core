@@ -2,7 +2,13 @@ Config = {}
 Config.Server = {}
 
 Config.Server.ClosedServer = true -- Permission based server lock only people who are in Config.Permissions will not get kicked
-Config.Server.DebugMode = true -- Will log everything in console
+Config.Server.DebugMode = false -- Will log everything in console
+Config.Hospital = {
+    x = -1349.44,
+    y = 1271.50,
+    z = 23.37,
+    h = 306.77	
+}
 
 Config.Permissions = {
     Mods = {  }, -- List of Mod Rockstar IDs

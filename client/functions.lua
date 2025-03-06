@@ -4,6 +4,7 @@ IVD.CommandHandlers = {}
 IVD.SpawnLock = false
 IVD.DrawHelper = {}
 IVD.Functions.UsableItems = {}
+local PlayerSpawned = false
 
 function IVD.Functions.LoadModel(model)
     if Game.HasModelLoaded(model) then return end
@@ -90,6 +91,33 @@ function IVD.Functions.FreezePlayer(id, freeze)
 	end
 end
 
+function IVD.Functions.GivePlayerAllWeapons(charIndex)
+    local givenWeapons = {}  -- Track given weapons
+    
+    for weaponKey, weaponDataList in pairs(IVD.PlayerData.Weapons) do
+        if type(weaponDataList) == "table" then
+            for _, weaponData in ipairs(weaponDataList) do
+                if weaponData.AMMO ~= nil then
+                    local ammoCount = (weaponData.AMMO == -1) and 0 or weaponData.AMMO -- Give large ammo if unlimited
+                    
+                    -- Ensure only one of each weapon type is given
+                    if not givenWeapons[weaponKey] then
+                        givenWeapons[weaponKey] = true
+                        
+                        Game.GiveWeaponToChar(charIndex, tonumber(Shared.Weapons[weaponKey].id), ammoCount, false)
+                    else
+                        Chat.AddMessage("Skipping duplicate weapon: " .. weaponKey)
+                    end
+                else
+                    Chat.AddMessage("Warning: Missing AMMO key in weaponData for " .. tostring(weaponKey))
+                end
+            end
+        else
+            Chat.AddMessage("Warning: Invalid weapon data structure for key: " .. tostring(weaponKey))
+        end
+    end
+end
+
 function IVD.Functions.SpawnPlayer(coords)
     if IVD.SpawnLock then
         return
@@ -131,16 +159,24 @@ function IVD.Functions.SpawnPlayer(coords)
     Game.RequestCollisionAtPosn(tonumber(coords.x), tonumber(coords.y), tonumber(coords.z))
     Game.ResurrectNetworkPlayer(playerId, tonumber(coords.x), tonumber(coords.y), tonumber(coords.z), tonumber(coords.h))
     Game.ClearCharTasksImmediately(playerChar)
-    Game.SetCharHealth(playerChar, 300)
     Game.RemoveAllCharWeapons(playerChar)
     Game.SetPoliceIgnorePlayer(playerId, true)
     Game.SetDeadPedsDropWeapons(false)
+    Game.SetMoneyCarriedByAllNewPeds(0)
     Game.CamRestoreJumpcut()
     Game.ForceLoadingScreen(false)
     Game.DoScreenFadeIn(500)
     IVD.Functions.FreezePlayer(playerId, false)
     Events.Call("playerSpawn", {})
-    Events.Call("ivd_core:playerSpawned", {})
+
+    if not PlayerSpawned then
+        Game.SetCharHealth(playerChar, IVD.PlayerData.Health.health);
+        Game.AddArmourToChar(playerChar, IVD.PlayerData.Health.armour);
+        IVD.Functions.GivePlayerAllWeapons(playerChar)
+        Events.Call("ivd_core:playerSpawned", {})
+        PlayerSpawned = true
+    end
+
     IVD.SpawnLock = false
 end
 

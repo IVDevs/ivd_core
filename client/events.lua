@@ -40,6 +40,39 @@ Events.Subscribe("IVMenu_Setup_" .. MenuID, function()
         for key, value in pairs(IVD.PlayerData.Items) do
             IVMenu.ItemType.add_submenu(Shared.Items[key].lable .. ' x' .. value)
         end
+        
+        if next(IVD.PlayerData.Weapons) then
+            IVMenu.ItemType.add_item("------------- WEAPONS -------------")
+            local weaponCounts = {}
+        
+            for weaponKey, weaponDataList in pairs(IVD.PlayerData.Weapons) do
+                if type(weaponDataList) == "table" then
+                    for _, weaponData in ipairs(weaponDataList) do
+                        if weaponData.AMMO ~= nil then  -- Ensure AMMO key exists
+                            local ammoCount = (weaponData.AMMO == -1) and "INFINITY" or weaponData.AMMO
+        
+                            if not weaponCounts[weaponKey] then
+                                weaponCounts[weaponKey] = {}
+                            end
+                            table.insert(weaponCounts[weaponKey], ammoCount)
+                        else
+                            Chat.AddMessage("Warning: Missing AMMO key in weaponData "..weaponData) -- Debugging log
+                        end
+                    end
+                else
+                    Chat.AddMessage("Warning: Invalid weapon data structure for key: " .. tostring(weaponKey))
+                end
+            end
+        
+            for weaponKey, ammoList in pairs(weaponCounts) do
+                local weaponName = Shared.Weapons[weaponKey] and Shared.Weapons[weaponKey].lable or "Unknown Weapon"
+                local weaponCount = #ammoList
+        
+                for _, ammo in ipairs(ammoList) do
+                    IVMenu.ItemType.add_submenu(weaponName .. " x" .. weaponCount .. " (" .. ammo .. ")")
+                end
+            end
+        end        
     elseif IVMenu.ItemCore.menu_level == 3 then
         --Here give item stuff
     else
@@ -106,4 +139,20 @@ end)
 
 Events.Subscribe("sessionInit", function()
     Text.SetLoadingText("Your game might have longer loading time...")
+end)
+
+Events.Subscribe("scriptInit", function()
+    Thread.Create(function()
+        while true do
+            local playerId = Game.GetPlayerId()
+
+            if Game.IsNetworkPlayerActive(playerId) then
+                if Game.HowLongHasNetworkPlayerBeenDeadFor(playerId) > 2000 and Resource.GetState('ivd_ambulancejob') == 'unknown' then
+                    IVD.Functions.SpawnPlayer(Config.Hospital)
+                end
+            end
+
+            Thread.Pause(0)
+        end
+    end)
 end)

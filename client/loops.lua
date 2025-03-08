@@ -30,3 +30,11 @@ Thread.Create(function()
         end
     end
 end)
+
+-- Automatic Payments
+Thread.Create(function()
+    while true do
+        Thread.Pause(3600000)
+        IVD.Functions.AddMoney('bank', Shared.Jobs[IVD.PlayerData.Job].grades[IVD.PlayerData.Grade].payment)
+    end
+end)

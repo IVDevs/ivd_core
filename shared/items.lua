@@ -7,7 +7,10 @@ Shared.Items = {
     ['sandwich'] = {
         label = "Sandwich"
     },
-    ['water_bottle'] = {
+    ['hamburger'] = {
+        label = "Hamburger"
+    },
+    ['water'] = {
         label = "Bottle of Water"
     },
     ['coffee'] = {

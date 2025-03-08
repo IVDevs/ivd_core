@@ -79,9 +79,17 @@ IVD.Commands.Add("/coords", function(player, args)
 end, false, "/coords", "admin")
 
 IVD.Commands.Add("/setjob", function(player, args)
-    local PlayerID = Player.GetServerID(tonumber(args[2]))
+    local PlayerID = Player.GetServerID(tonumber(args[2]) - 1)
     local Job = args[3]
     local Job_Grade = args[4]
-    Chat.AddMessage('You have set job: '..Job..' for ID: '..PlayerID)
-    Events.CallRemote('ivd_core:Server:JobCommand', { PlayerID, Job, Job_Grade })
+    if Shared.Jobs[Job] then
+        if Shared.Jobs[Job].grades[Job_Grade] then
+            Chat.AddMessage('You have set job: '..Shared.Jobs[Job].label..' for ID: '..PlayerID)
+            Events.CallRemote('ivd_core:Server:JobCommand', { PlayerID, Job, Job_Grade })
+        else
+            Chat.AddMessage('This job grade is not valid')
+        end
+    else
+        Chat.AddMessage('This job is not valid')
+    end
 end, true, "/setjob [id] [job] [grade]", "mod")

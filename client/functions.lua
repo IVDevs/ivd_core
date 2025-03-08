@@ -241,3 +241,26 @@ function IVD.Functions.RemoveItem(itemName, quantity)
     end
     IVD.DrawHelper.HideHelper()
 end
+
+function IVD.Functions.AddMoney(type, amount)
+    if IVD.PlayerData.money[type] then
+        IVD.PlayerData.money[type] = IVD.PlayerData.money[type] + amount
+        IVD.DrawHelper.ShowHelper('+'..amount..' '..type)
+    else
+        Chat.AddMessage('Invalid money type')
+    end
+    IVD.DrawHelper.HideHelper()
+end
+
+function IVD.Functions.RemoveMoney(type, amount)
+    if IVD.PlayerData.money[type] then
+        IVD.PlayerData.money[type] = IVD.PlayerData.money[type] - amount
+        if IVD.PlayerData.money[type] < 0 then
+            IVD.PlayerData.money[type] = 0
+        end
+        IVD.DrawHelper.ShowHelper('-'..amount..' '..type)
+    else
+        Chat.AddMessage('Invalid money type')
+    end
+    IVD.DrawHelper.HideHelper()
+end

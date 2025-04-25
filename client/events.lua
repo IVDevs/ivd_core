@@ -38,7 +38,7 @@ Events.Subscribe("IVMenu_Setup_" .. MenuID, function()
         end
         IVMenu.ItemType.add_item("------------- ITEMS -------------")
         for key, value in pairs(IVD.PlayerData.Items) do
-            IVMenu.ItemType.add_submenu(Shared.Items[key].lable .. ' x' .. value)
+            IVMenu.ItemType.add_submenu(Shared.Items[key].label .. ' x' .. value)
         end
         
         if next(IVD.PlayerData.Weapons) then

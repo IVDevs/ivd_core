@@ -1,7 +1,7 @@
 Config = {}
 Config.Server = {}
 
-Config.Server.ClosedServer = true -- Permission based server lock only people who are in Config.Permissions will not get kicked
+Config.Server.ClosedServer = false -- Permission based server lock only people who are in Config.Permissions will not get kicked
 Config.Server.DebugMode = false -- Will log everything in console
 Config.Hospital = {
     x = -1349.45,

@@ -171,7 +171,7 @@ function IVMenuDraw(items)
     if(IVMenu.ItemCore.menu_len > 0) then 
         -- nombre d'item / item max
         Game.SetTextScale(0.200000,  0.2500000)
-        Game.SetTextDropshadow(false, 0, 0, 0, 0)
+        Game.SetTextDropshadow(0, 0, 0, 0, 0)
         Game.SetTextFont(3)
         Game.SetTextColour(255, 255, 255, 255)
         if(IVMenu.ItemCore.menu_len > 9) then 
@@ -228,14 +228,14 @@ function IVMenuDraw(items)
             
             Game.SetTextFont(3)
             Game.SetTextScale(0.1700000,  0.3000000)
-            Game.SetTextDropshadow(false, 0, 0, 0, 0)
+            Game.SetTextDropshadow(0, 0, 0, 0, 0)
             Game.DisplayTextWithLiteralString(menu_posX+0.005, scroll_pos_y+0.3/10*(i-1)+0.005, "STRING", "" .. item_text)
 
             
             if(typeM[i] == ItemType.SubI) then -- display submenu
                 Game.SetTextFont(3)
                 Game.SetTextScale(0.1500000,  0.3000000)
-                Game.SetTextDropshadow(false, 0, 0, 0, 0)
+                Game.SetTextDropshadow(0, 0, 0, 0, 0)
                 if(IsCursorInAreaLeftTopCenter(menu_posX, scroll_pos_y+0.3/10*(i-1), 0.2, 0.3/10) and not InError) then
                     Game.SetTextColour(0, 0, 0, 255)
                 else
@@ -245,7 +245,7 @@ function IVMenuDraw(items)
             elseif(typeM[i] == ItemType.ValI) then -- display value
                 Game.SetTextFont(3)
                 Game.SetTextScale(0.1500000,  0.3000000)
-                Game.SetTextDropshadow(false, 0, 0, 0, 0)
+                Game.SetTextDropshadow(0, 0, 0, 0, 0)
                 if(IsCursorInAreaLeftTopCenter(menu_posX, scroll_pos_y+0.3/10*(i-1), 0.2, 0.3/10) and not InError) then
                     Game.SetTextColour(0, 0, 0, 255)
                 else
@@ -348,14 +348,14 @@ Events.Subscribe("scriptInit", function()
                 
                 -- titre
                 Game.SetTextScale(0.200000,  0.300000)
-                Game.SetTextDropshadow(false, 0, 0, 0, 0)
+                Game.SetTextDropshadow(0, 0, 0, 0, 0)
                 Game.SetTextFont(3)
                 Game.SetTextColour(255, 255, 255, 255)
                 Game.DisplayTextWithLiteralString(menu_posX + 0.0500, menu_posY - 0.0760, "STRING", IVMenu.ItemCore.title)    
 
                 -- titre submenu
                 Game.SetTextScale(0.200000,  0.3500000)
-                Game.SetTextDropshadow(false, 0, 0, 0, 0)
+                Game.SetTextDropshadow(0, 0, 0, 0, 0)
                 Game.SetTextFont(3)
                 Game.SetTextColour(255, 255, 255, 255)
                 Game.DisplayTextWithLiteralString(menu_posX+0.005, menu_posY - 0.0260, "STRING", IVMenu.ItemCore.footer)

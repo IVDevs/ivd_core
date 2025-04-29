@@ -9,7 +9,7 @@ Events.Subscribe("ivd_core:playerJoined", function(RocstarID)
     end
 
     -- First, check if player exists
-    MySQL.Select("SELECT * FROM players WHERE RockstarID = ?", { RocstarID }, function(result)
+    Database.Select("SELECT * FROM players WHERE RockstarID = ?", { RocstarID }, function(result)
         if result and #result > 0 then
             -- Player exists
             IVD.Functions.DebugMode('[DEBUG] Player just joined')
@@ -29,9 +29,9 @@ Events.Subscribe("ivd_core:playerJoined", function(RocstarID)
             local itemsJson = tostring(IVD.JSON.Encode(Config.NewCharacterSettings.Starting_Items))
             local positionJson = tostring(IVD.JSON.Encode(Config.NewCharacterSettings.Starting_Position))
 
-            MySQL.Insert("INSERT INTO players (RockstarID, money, Items, position) VALUES (?,?,?,?)", { RocstarID, moneyJson, itemsJson, positionJson }, function(insertResult)
+            Database.Insert("INSERT INTO players (RockstarID, money, Items, position) VALUES (?,?,?,?)", { RocstarID, moneyJson, itemsJson, positionJson }, function(insertResult)
                 -- After inserting, fetch again
-                MySQL.Select("SELECT * FROM players WHERE RockstarID = ?", { RocstarID }, function(newResult)
+                Database.Select("SELECT * FROM players WHERE RockstarID = ?", { RocstarID }, function(newResult)
                     if newResult and #newResult > 0 then
                         local newPlayerData = newResult[1]
                         newPlayerData.position = IVD.JSON.Decode(newPlayerData.position)
@@ -65,7 +65,7 @@ Events.Subscribe("ivd_core:UpdatePlayerServerData", function(RocstarID, PlayerDa
     local weaponsJson = IVD.JSON.Encode(PlayerData.Weapons)
     local healthJson = IVD.JSON.Encode(PlayerData.Health)
 
-    MySQL.Execute("UPDATE players SET position=?, money=?, Items=?, Weapons=?, Health=? WHERE RockstarID=?", {
+    Database.ExecuteAsync("UPDATE players SET position=?, money=?, Items=?, Weapons=?, Health=? WHERE RockstarID=?", {
         positionJson, moneyJson, itemsJson, weaponsJson, healthJson, RocstarID
     }, function(affectedRows)
         -- Updated

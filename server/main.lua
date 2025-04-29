@@ -1,7 +1,7 @@
 IVD = {}
 
 -- MYSQL LOGIN --
-MySQL.Connect("IP", 33060, "LOGIN", "PASSWORD", "DATABASE")
+Database.Connect(0, "mysqlx://user:password@host:port/database")
 
 function GetCoreObject()
     return IVD

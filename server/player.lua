@@ -9,7 +9,7 @@ Events.Subscribe("ivd_core:playerJoined", function(RocstarID)
     end
 
     -- First, check if player exists
-    Database.Select("SELECT * FROM players WHERE RockstarID = ?", { RocstarID }, function(result)
+    Database.SelectAsync("SELECT * FROM players WHERE RockstarID = ?", { RocstarID }, function(result)
         if result and #result > 0 then
             -- Player exists
             IVD.Functions.DebugMode('[DEBUG] Player just joined')
@@ -31,7 +31,7 @@ Events.Subscribe("ivd_core:playerJoined", function(RocstarID)
 
             Database.Insert("INSERT INTO players (RockstarID, money, Items, position) VALUES (?,?,?,?)", { RocstarID, moneyJson, itemsJson, positionJson }, function(insertResult)
                 -- After inserting, fetch again
-                Database.Select("SELECT * FROM players WHERE RockstarID = ?", { RocstarID }, function(newResult)
+                Database.SelectAsync("SELECT * FROM players WHERE RockstarID = ?", { RocstarID }, function(newResult)
                     if newResult and #newResult > 0 then
                         local newPlayerData = newResult[1]
                         newPlayerData.position = IVD.JSON.Decode(newPlayerData.position)

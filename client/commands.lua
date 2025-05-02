@@ -93,3 +93,7 @@ IVD.Commands.Add("/setjob", function(player, args)
         Chat.AddMessage('This job is not valid')
     end
 end, true, "/setjob [id] [job] [grade]", "mod")
+
+IVD.Commands.Add("/ping", function(player, args)
+    Events.CallRemote('ivd_core:PlayerPing', {})
+end, false, "/ping")

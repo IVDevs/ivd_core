@@ -11,3 +11,9 @@ Events.Subscribe("ivd_core:Server:JobCommand", function(id, job, grade)
     IVD.Functions.DebugMode('[DEBUG] Job command has been ran')
     Events.CallRemote("ivd_core:PassPlayerRIDForJob", id, { job, grade })
 end, true)
+
+Events.Subscribe("ivd_core:PlayerPing", function()
+    local source = Events.GetSource()
+
+    Chat.SendMessage(source, "Your ping is: {0000FF}" .. Player.GetPing(source))
+end, true)

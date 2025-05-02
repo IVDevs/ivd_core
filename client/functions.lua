@@ -156,6 +156,7 @@ function IVD.Functions.SpawnPlayer(coords)
         playerChar = Game.GetPlayerChar(playerId)
     end
 
+    Game.SetNoResprays(true)
     Game.RequestCollisionAtPosn(tonumber(coords.x), tonumber(coords.y), tonumber(coords.z))
     Game.ResurrectNetworkPlayer(playerId, tonumber(coords.x), tonumber(coords.y), tonumber(coords.z), tonumber(coords.h))
     Game.ClearCharTasksImmediately(playerChar)
